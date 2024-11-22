@@ -57,7 +57,7 @@ def ema_loss(x, running_mean, alpha):
 
     return t_log, running_mean
 
-
+#fagag
 def compute_mi_loss(scores1, scores2, epsilon=1e-10):
     # Calculate mutual information loss
     mi_loss = -(torch.sum(torch.log(scores1 + epsilon)) + torch.sum(torch.log(1 - scores2 + epsilon))) / (
