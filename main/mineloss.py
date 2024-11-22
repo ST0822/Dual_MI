@@ -625,7 +625,7 @@ def valid_epoch(test_loader, generator, discriminator, device, num):
 
     return test_loss / len(test_loader), features
 
-
+#test commit
 def knn_cross_validation(features, labels, n_splits=32):
     # KNN实例化
     knn = KNeighborsClassifier(n_neighbors=5)
@@ -650,7 +650,7 @@ def knn_cross_validation(features, labels, n_splits=32):
     # 计算平均得分
     average_score = score_sum / n_splits
     return average_score
-
+#fgsag
 
 if __name__ == '__main__':
     # 代码
