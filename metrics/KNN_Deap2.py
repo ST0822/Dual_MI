@@ -1,3 +1,4 @@
+import gc
 import os
 import time
 import warnings
@@ -10,9 +11,12 @@ from sklearn.neighbors import KNeighborsClassifier
 import numpy as np
 from torch.autograd import Variable
 import torch.utils.data as Data
+# from cuml.neighbors import KNeighborsClassifier
+
 from models.Generator import EEGfuseNet_DEAP
-
-
+# from models.Generator_without_gru import EEGfuseNet_DEAP
+from sklearnex import patch_sklearn, unpatch_sklearn
+patch_sklearn()
 def setup_seed(seed):
     torch.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
@@ -96,7 +100,7 @@ def EEGknn5(filename, model_path, emotion_dict, loader_datasets):
     total_results = []
     accmax = []
     for i in range(1):
-        neighbors = 64
+        neighbors = 5
         # 64效果好
         for j in range(len(loader_datasets)):
             total_features, total_labels = extractor_cnn_rnn_para(loader_datasets[j], 192, 1, filename, model_path)
@@ -144,8 +148,15 @@ def get_TensorDataset_deap(emotion_dict):
                     all_matrices.append(geneva_video)
             else:
                 print(f"Warning: Unexpected data structure in {file_name}. Skipping.")
-    all_matrices_array = np.array(all_matrices).reshape(1280)
-    all_matrices_array = np.concatenate(all_matrices_array, axis=1)
+    all_matrices = np.array(all_matrices)
+
+    all_matrices_array = np.zeros((32, 40 * 32 * 30720), dtype=np.float32)
+    # 按行处理并拼接
+    for i in range(32):
+        # 提取第 i 行的所有 (20, 30720) 的数组并拼接
+        row_flattened = np.hstack([all_matrices[i, j].reshape(-1) for j in range(40)])
+        all_matrices_array[i] = row_flattened
+        gc.collect()
     ch_names = ['eeg_' + str(i + 1) for i in range(32)]
     info = mne.create_info(
         # 通道名
@@ -208,7 +219,7 @@ def knn_Deap():
         "Dominance": 2,
         "Liking": 3
     }
-    model_path = './checkpoints/featurelist_train.py/st/adjgan'
+    model_path = './checkpoints'
     result = get_filelist_knn(model_path, emotion_dict)
     # get_file_knn('MSE+MI+Dis_sub0seedglobal_scale_value_mine_session1.pkl')
     print('end')

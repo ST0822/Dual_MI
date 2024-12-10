@@ -241,7 +241,7 @@ if __name__ == '__main__':
             for loss_type in loss_types:
                 train_Autoencoder_g(0, 'RNN', norm_type, 'deap', loss_type)
     # result = knn_Seed()
-    setup_seed(3)
+    setup_seed(42)
     result = knn_Deap()
     args = {'hidden_dim': 16, 'n_layer': 1, 'n_filters': 1, 'input_size': 384, 'dataset_type': 'seed', 'norm_type': '',
             'batch_size': 48, 'device': 'cuda' if torch.cuda.is_available() else 'cpu', 'alpha': 0.5}

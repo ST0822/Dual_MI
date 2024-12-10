@@ -64,9 +64,30 @@ class LinearSimilarityDiscriminator(nn.Module):
         return x
 # 测试代码
 if __name__ == "__main__":
-    x = torch.randn(128, 1, 16, 288)
+    # x = torch.randn(128, 1, 16, 288)
+    #
+    # model = LinearSimilarityDiscriminator()
+    # output = model(x)
+    #
+    # print(output.shape)
+    import numpy as np
 
-    model = LinearSimilarityDiscriminator()
-    output = model(x)
+    # 示例数据：构造形状为 (32, 40) 的数组，其中每个元素为 (20, 30720)
+    input_data = np.empty((32, 40), dtype=object)
+    for i in range(32):
+        for j in range(40):
+            input_data[i, j] = np.random.rand(20, 30720)  # 每个元素是 (20, 30720) 的 ndarray
 
-    print(output.shape)
+    # 初始化最终结果数组
+    result_array = np.zeros((32, 40 * 20 * 30720), dtype=np.float32)
+
+    # 按行处理并拼接
+    for i in range(32):
+        # 提取第 i 行的所有 (20, 30720) 的数组并拼接
+        row_flattened = np.hstack([input_data[i, j].reshape(-1) for j in range(40)])
+        result_array[i] = row_flattened
+
+    # 打印结果形状
+    print("Resulting shape:", result_array.shape)
+
+

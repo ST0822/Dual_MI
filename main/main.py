@@ -233,8 +233,8 @@ def train_Autoencoder_g(sub, model_id, norm_type, dataset_type, loss_type):
 
 if __name__ == '__main__':
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
-    # train = False
-    train = True
+    train = False
+    # train = True
     if train:
         loss_types = ['mine2']
         # loss_type = ['mine', 'fdiv', 'mine_biased', 'mine2']

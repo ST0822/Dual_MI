@@ -125,7 +125,7 @@ def get_TensorDataset_deap(emotion_dict):
     loader_datasets = []
     BATCH_SIZE = 128
     # 文件夹路径，包含MAT文件
-    folder_path = './data/2_preprocessed_byJANE'
+    folder_path = 'F:\\repo\\Dual_MI\\Dual_MI\\data\\2_preprocessed_byJANE'
     # 初始化一个空的列表来存储所有矩阵
     all_matrices = []
     # 遍历文件夹中的所有MAT文件
@@ -208,7 +208,7 @@ def knn_Deap():
         "Dominance": 2,
         "Liking": 3
     }
-    model_path = './checkpoints/featurelist_train.py/without_mi'
+    model_path = 'F:\\repo\\Dual_MI\\Dual_MI\\checkpoints\\featurelist_train.py\\changedis'
     result = get_filelist_knn(model_path, emotion_dict)
     # get_file_knn('MSE+MI+Dis_sub0seedglobal_scale_value_mine_session1.pkl')
     print('end')
